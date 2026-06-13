@@ -8,7 +8,7 @@ interface Result {
   average: number;
 }
 
-export const parseIntArgs = (args: string[]): number[] => {
+const parseIntArgs = (args: string[]): number[] => {
   const intArr: number[] = [];
   for (const arg of args) {
     if (isNaN(Number(arg))) {

@@ -1,34 +1,43 @@
+import { parseIntArgs } from "./utils.ts"
+
 interface Result {
-  weight: number;
-  height: number;
+  weight: number,
+  height: number,
+  bmi: string
 }
 
-export const parseIntArgs = (args: string[]): Result => {
-  if (isNaN(Number(args[2])) || isNaN(Number(args[3]))) {
-    throw new Error("Provided values were not numbers!");
-  }
-  return {
-    weight: Number(args[2]),
-    height: Number(args[3]),
-  };
-};
-
-const calculateBmi = (): string => {
-  const args: Result = parseIntArgs(process.argv)
-  const weight = args.weight
-  const height = args.height
+export const calculateBmi = (weight: number, height: number): Result => {
   if (height <= 0 || weight <= 0) {
     throw new Error("Height or weigth cannot be zero or less");
   }
   const hInM = height / 100;
   const bmi = weight / (hInM * hInM);
   if (bmi < 18.5) {
-    return "Underweight";
+    return {
+      weight,
+      height,
+      bmi: "Underweight"
+    }
   } else if (bmi > 24.9) {
-    return "Overweight";
+    return {
+      weight,
+      height,
+      bmi: "Overweight"
+    }
   } else {
-    return "Normal range";
+    return {
+      weight,
+      height,
+      bmi: "Normal Range"
+    }
   }
 };
 
-console.log(calculateBmi());
+if (process.argv[1] === import.meta.filename) {
+  const weight = parseIntArgs(process.argv[2])
+  const height = parseIntArgs(process.argv[3])
+  if (weight === null || height === null) {
+    throw new Error("Invalid arguments given")
+  }
+  console.log(calculateBmi(weight, height))
+}
