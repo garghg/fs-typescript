@@ -16,10 +16,15 @@ app.get("/bmi", (req, res) => {
     res.status(400).json({ error: "malformatted parameters" });
     return;
   }
-  res.json({ bmi: calculateBmi(weight, height) });
+  res.json(calculateBmi(weight, height));
 });
 
 app.post("/exercises", (req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (req.body.target === undefined || req.body.daily_exercises === undefined) {
+    res.status(400).json({ error: "parameters missing" });
+    return;
+  }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const target = parseIntArgs(req.body.target);
   if (target === null) {
@@ -43,7 +48,7 @@ app.post("/exercises", (req, res) => {
   }
 });
 
-const PORT = 3003;
+const PORT = 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
