@@ -8,21 +8,36 @@ interface Result {
   average: number;
 }
 
-const calculateExercises = (exercise: number[], target: number): Result => {
-  const periodLength = exercise.length;
-  if (periodLength < 1) {
-    throw new Error('Please enter some data')
+export const parseIntArgs = (args: string[]): number[] => {
+  const intArr: number[] = [];
+  for (const arg of args) {
+    if (isNaN(Number(arg))) {
+      throw new Error("Provided values were not numbers!");
+    } else {
+      intArr.push(Number(arg));
+    }
   }
-  for (const e of exercise) {
+  return intArr;
+};
+
+const calculateexercises = (): Result => {
+  const args = parseIntArgs(process.argv.slice(2));
+  const target = args[0];
+  const exercises = args.slice(1);
+  const periodLength = exercises.length;
+  if (periodLength < 1) {
+    throw new Error("Please enter some data");
+  }
+  for (const e of exercises) {
     if (e < 0) {
-      throw new Error('Cannot have negative hours')
+      throw new Error("Cannot have negative hours");
     }
   }
   if (target <= 0) {
-    throw new Error('Invalid target')
+    throw new Error("Invalid target");
   }
-  const trainingDays = exercise.reduce((acc, e) => (e > 0 ? acc + 1 : acc), 0);
-  const average = exercise.reduce((acc, e) => acc + e, 0) / periodLength;
+  const trainingDays = exercises.reduce((acc, e) => (e > 0 ? acc + 1 : acc), 0);
+  const average = exercises.reduce((acc, e) => acc + e, 0) / periodLength;
   let rating;
   let success;
   let ratingDescription;
@@ -51,5 +66,4 @@ const calculateExercises = (exercise: number[], target: number): Result => {
   };
 };
 
-
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+console.log(calculateexercises());
