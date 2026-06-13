@@ -1,9 +1,9 @@
-import { parseIntArgs } from "./utils.ts"
+import { parseIntArgs } from "./utils.ts";
 
 interface Result {
-  weight: number,
-  height: number,
-  bmi: string
+  weight: number;
+  height: number;
+  bmi: string;
 }
 
 export const calculateBmi = (weight: number, height: number): Result => {
@@ -16,28 +16,28 @@ export const calculateBmi = (weight: number, height: number): Result => {
     return {
       weight,
       height,
-      bmi: "Underweight"
-    }
+      bmi: "Underweight",
+    };
   } else if (bmi > 24.9) {
     return {
       weight,
       height,
-      bmi: "Overweight"
-    }
+      bmi: "Overweight",
+    };
   } else {
     return {
       weight,
       height,
-      bmi: "Normal Range"
-    }
+      bmi: "Normal Range",
+    };
   }
 };
 
 if (process.argv[1] === import.meta.filename) {
-  const weight = parseIntArgs(process.argv[2])
-  const height = parseIntArgs(process.argv[3])
+  const weight = parseIntArgs(process.argv[2]);
+  const height = parseIntArgs(process.argv[3]);
   if (weight === null || height === null) {
-    throw new Error("Invalid arguments given")
+    throw new Error("Invalid arguments given");
   }
-  console.log(calculateBmi(weight, height))
+  console.log(calculateBmi(weight, height));
 }

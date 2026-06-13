@@ -1,6 +1,9 @@
 export const parseIntArgs = (value: unknown): number | null => {
-  if (typeof value !== 'string' || isNaN(Number(value))) {
-    return null;
+  if (typeof value === 'number' && !isNaN(value)) {
+    return value;
   }
-  return Number(value);
+  if (typeof value === 'string' && !isNaN(Number(value))) {
+    return Number(value);
+  }
+  return null;
 };

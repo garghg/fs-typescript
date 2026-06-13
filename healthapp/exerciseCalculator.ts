@@ -1,3 +1,5 @@
+import { parseIntArgs } from "./utils.ts";
+
 interface Result {
   periodLength: number;
   trainingDays: number;
@@ -8,22 +10,22 @@ interface Result {
   average: number;
 }
 
-const parseIntArgs = (args: string[]): number[] => {
-  const intArr: number[] = [];
-  for (const arg of args) {
-    if (isNaN(Number(arg))) {
-      throw new Error("Provided values were not numbers!");
-    } else {
-      intArr.push(Number(arg));
-    }
-  }
-  return intArr;
-};
+// const parseIntArgs = (args: string[]): number[] => {
+//   const intArr: number[] = [];
+//   for (const arg of args) {
+//     if (isNaN(Number(arg))) {
+//       throw new Error("Provided values were not numbers!");
+//     } else {
+//       intArr.push(Number(arg));
+//     }
+//   }
+//   return intArr;
+// };
 
-const calculateexercises = (): Result => {
-  const args = parseIntArgs(process.argv.slice(2));
-  const target = args[0];
-  const exercises = args.slice(1);
+export const calculateexercises = (
+  exercises: number[],
+  target: number,
+): Result => {
   const periodLength = exercises.length;
   if (periodLength < 1) {
     throw new Error("Please enter some data");
@@ -66,4 +68,18 @@ const calculateexercises = (): Result => {
   };
 };
 
-console.log(calculateexercises());
+if (process.argv[1] === import.meta.filename) {
+  const args = process.argv.slice(2);
+  const target = parseIntArgs(args[0]);
+  if (target === null) {
+    throw new Error("invalid target argument given");
+  }
+  const exercises = args.slice(1).map((e) => {
+    const num = parseIntArgs(e);
+    if (num === null) {
+      throw new Error("invalid argument given");
+    }
+    return num;
+  });
+  console.log(calculateexercises(exercises, target));
+}
