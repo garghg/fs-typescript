@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react"
 import { getAll } from "./services/diaryService"
 import type { DiaryEntry } from "./types"
+import EntryForm from "./components/EntryForm"
 
 const App = () => {
   const [entries, setEntries] = useState<DiaryEntry[]>([])
+  
   useEffect(() => {
     getAll().then(entries => setEntries(entries))
   }, [])
+
   return (
     <div>
       <h1>Diary Entries</h1>
@@ -17,6 +20,7 @@ const App = () => {
           <p>{e.weather}</p>
         </div>
       ))}
+      <EntryForm entries={entries} setEntries={setEntries} />
     </div>
   )
 }
