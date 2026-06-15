@@ -1,8 +1,8 @@
 import patientData from "../data/patientsData.ts";
-import type { NewPatient, Patient, PatientNoSsn } from "../types.ts";
+import type { NewPatient, NonSensitivePatient, Patient } from "../types.ts";
 import { v1 as uuid } from "uuid";
 
-export const getPaitents = (): PatientNoSsn[] => {
+export const getPaitents = (): NonSensitivePatient[] => {
   return patientData.map((p) => ({
     id: p.id,
     name: p.name,
@@ -12,13 +12,17 @@ export const getPaitents = (): PatientNoSsn[] => {
   }));
 };
 
-export const addPatient = (patientToAdd: NewPatient): Patient => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,  @typescript-eslint/no-unsafe-call
+export const addPatient = (patientToAdd: NewPatient): NonSensitivePatient => {
   const id: string = uuid();
   const newPatient = {
     id,
+    entries: [],
     ...patientToAdd,
   };
   patientData.push(newPatient);
   return newPatient;
+};
+
+export const getPatientbyId = (id: string): Patient | undefined => {
+  return patientData.find(p => p.id === id);
 };
