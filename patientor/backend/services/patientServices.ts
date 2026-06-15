@@ -9,6 +9,7 @@ export const getPaitents = (): NonSensitivePatient[] => {
     dateOfBirth: p.dateOfBirth,
     gender: p.gender,
     occupation: p.occupation,
+    entries: p.entries
   }));
 };
 
