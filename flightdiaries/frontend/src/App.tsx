@@ -26,6 +26,11 @@ const App = () => {
         </div>
       )}
       <h1>Diary Entries</h1>
+      <EntryForm
+        entries={entries}
+        setEntries={setEntries}
+        setNotify={setNotify}
+      />
       {entries.map((e) => (
         <div key={e.id}>
           <p>{e.date}</p>
@@ -33,11 +38,6 @@ const App = () => {
           <p>{e.weather}</p>
         </div>
       ))}
-      <EntryForm
-        entries={entries}
-        setEntries={setEntries}
-        setNotify={setNotify}
-      />
     </div>
   );
 };

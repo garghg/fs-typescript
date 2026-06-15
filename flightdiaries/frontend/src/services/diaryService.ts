@@ -10,3 +10,12 @@ export const addEntry = async (entry: InputDiaryEntry) => {
   const res = await axios.post<DiaryEntry>(`${baseURL}/diaries`, entry);
   return res.data;
 };
+
+export const getWeathers = () => {
+  return axios.get<string[]>(`${baseURL}/diaries/weatherOptions`).then(res => res.data)
+}
+
+
+export const getVisibilities = () => {
+  return axios.get<string[]>(`${baseURL}/diaries/visibilityOptions`).then(res => res.data)
+}
