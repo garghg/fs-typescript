@@ -37,7 +37,7 @@ jobs:
 
     - name: Start patientor frontend preview
       working-directory: ./patientor/frontend
-      run: npx vite preview --port 5173 &
+      run: npx vite preview --port 5173 --host &
 
     - name: Install e2e test dependencies
       working-directory: ./patientor-tests
