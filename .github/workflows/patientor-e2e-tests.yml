@@ -7,8 +7,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.58.2-noble
 
     steps:
     - name: Checkout code
@@ -37,11 +35,15 @@ jobs:
 
     - name: Start patientor frontend preview
       working-directory: ./patientor/frontend
-      run: npx vite preview --port 5173 --host &
+      run: npx vite preview --port 5173 &
 
     - name: Install e2e test dependencies
       working-directory: ./patientor-tests
       run: npm install
+
+    - name: Install Playwright browsers
+      working-directory: ./patientor-tests
+      run: npx playwright install chromium --with-deps
 
     - name: Wait for servers to start
       run: npx wait-on http://localhost:3001/api/ping http://localhost:5173 --timeout 60000
