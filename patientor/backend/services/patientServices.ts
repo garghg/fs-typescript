@@ -1,5 +1,5 @@
 import patientData from "../data/patientsData.ts";
-import type { NewPatient, NonSensitivePatient, Patient } from "../types.ts";
+import type { NewPatient, NonSensitivePatient, Patient, EntryWithoutId, Entry } from "../types.ts";
 import { v1 as uuid } from "uuid";
 
 export const getPaitents = (): NonSensitivePatient[] => {
@@ -26,4 +26,19 @@ export const addPatient = (patientToAdd: NewPatient): NonSensitivePatient => {
 
 export const getPatientbyId = (id: string): Patient | undefined => {
   return patientData.find(p => p.id === id);
+};
+
+export const addEntry = (entryToAdd: EntryWithoutId, patientId: string): Entry => {
+  const id = uuid();
+  const newEntry = {
+    id,
+    ...entryToAdd
+  };
+  const patient = patientData.find(p => p.id === patientId);
+  if (patient) {
+    patient.entries.push(newEntry);
+    return newEntry;
+  } else {
+    throw new Error("Invalid Patient ID");
+  }
 };
