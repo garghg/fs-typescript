@@ -21,7 +21,7 @@ interface EntryFormProps {
 
 const EntryForm = ({ id, setCurPatient, curPatient }: EntryFormProps) => {
   const [showForm, setShowForm] = useState(false);
-  const [type, setType] = useState("");
+  const [type, setType] = useState("HealthCheck");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const [specialist, setSpecialist] = useState("");
@@ -158,67 +158,79 @@ const EntryForm = ({ id, setCurPatient, curPatient }: EntryFormProps) => {
 
   return (
     <>
-      <FormControl size="medium" sx={{ width: 300, mb: 2, mt: 2 }}>
-        <InputLabel>Type</InputLabel>
-        <Select
-          value={type}
-          onChange={(e) => {
-            setType(e.target.value);
-            setShowForm(true);
-          }}
-          label="Type"
-        >
-          <MenuItem value="HealthCheck">Health Check</MenuItem>
-          <MenuItem value="Hospital">Hospital</MenuItem>
-          <MenuItem value="OccupationalHealthcare">
-            Occupational Healthcare
-          </MenuItem>
-        </Select>
-      </FormControl>
+      {!showForm && (
+        <Button variant="contained" onClick={() => setShowForm(true)}>
+          Add New Entry
+        </Button>
+      )}
       {showForm && (
-        <Box sx={{ border: 1, borderColor: "black", borderRadius: 2, p: 2 }}>
-          <Stack spacing={2}>
-            <TextField
-              type="date"
-              slotProps={{ inputLabel: { shrink: true } }}
-              label="Date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-            <TextField
-              label="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <TextField
-              label="Specialist"
-              value={specialist}
-              onChange={(e) => setSpecialist(e.target.value)}
-            />
-            <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel>Diagnosis Codes</InputLabel>
-              <Select
-                multiple
-                value={selectedCodes}
-                onChange={(e) => setSelectedCodes(e.target.value as string[])}
-                label="Diagnosis Codes"
+        <Stack spacing={2} sx={{ mt: 2 }}>
+          <FormControl size="medium" sx={{ mb: 2, mt: 2 }}>
+            <InputLabel>Type</InputLabel>
+            <Select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              label="Type"
+            >
+              <MenuItem value="HealthCheck">Health Check</MenuItem>
+              <MenuItem value="Hospital">Hospital</MenuItem>
+              <MenuItem value="OccupationalHealthcare">
+                Occupational Healthcare
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <Box sx={{ border: 1, borderColor: "black", borderRadius: 2, p: 2 }}>
+            <Stack spacing={2}>
+              <TextField
+                type="date"
+                slotProps={{ inputLabel: { shrink: true } }}
+                label="Date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              />
+              <TextField
+                label="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              <TextField
+                label="Specialist"
+                value={specialist}
+                onChange={(e) => setSpecialist(e.target.value)}
+              />
+              <FormControl sx={{ minWidth: 200 }}>
+                <InputLabel>Diagnosis Codes</InputLabel>
+                <Select
+                  multiple
+                  value={selectedCodes}
+                  onChange={(e) => setSelectedCodes(e.target.value as string[])}
+                  label="Diagnosis Codes"
+                >
+                  {codes.map((c) => (
+                    <MenuItem key={c} value={c}>
+                      {c}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {renderForm()}
+              <Button
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={!type}
               >
-                {codes.map((c) => (
-                  <MenuItem key={c} value={c}>
-                    {c}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {renderForm()}
-            <Button variant="contained" onClick={handleSubmit}>
-              Add Entry
-            </Button>
-            <Button variant="contained" onClick={() => resetForm()}>
-              Close
-            </Button>
-          </Stack>
-        </Box>
+                Add Entry
+              </Button>
+            </Stack>
+          </Box>
+          <Button
+            variant="contained"
+            sx={{ mt: 2 }}
+            onClick={() => resetForm()}
+          >
+            Close
+          </Button>
+        </Stack>
       )}
     </>
   );

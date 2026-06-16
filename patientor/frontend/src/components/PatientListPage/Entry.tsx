@@ -36,7 +36,12 @@ const Entry = ({ entry }: { entry: Entry }) => {
           <p>Health Rating: {healthCheckLabel[entry.healthCheckRating]}</p>
         );
       case "Hospital":
-        return <p>{entry.discharge.date}</p>;
+        return (
+          <>
+            <p>{entry.discharge.date}</p>
+            <p>{entry.discharge.criteria}</p>
+          </>
+        );
       case "OccupationalHealthcare":
         return (
           <div>
