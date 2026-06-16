@@ -7,6 +7,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.52.0-noble
 
     steps:
     - name: Checkout code
@@ -15,7 +17,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: '24'
+        node-version: '22'
 
     - name: Install patientor backend dependencies
       working-directory: ./patientor/backend
@@ -39,11 +41,7 @@ jobs:
 
     - name: Install e2e test dependencies
       working-directory: ./patientor-tests
-      run: npm install 
-
-    - name: Install Playwright browsers
-      working-directory: ./patientor-tests
-      run: npx playwright install --with-deps chromium
+      run: npm install
 
     - name: Wait for servers to start
       run: npx wait-on http://localhost:3001/api/ping http://localhost:5173 --timeout 60000
