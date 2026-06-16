@@ -25,7 +25,7 @@ export type NewPatient = z.infer<typeof NewPatientSchema>;
 
 const BaseEntrySchema = z.object({
   description: z.string(),
-  date: z.string(),
+  date: z.iso.date(),
   specialist: z.string(),
   diagnosisCodes: z.array(z.string()).optional()
 });
@@ -50,7 +50,7 @@ const HealthCheckEntrySchema = BaseEntrySchema.extend({
 });
 
 const DischargeSchema = z.object({
-  date: z.string(),
+  date: z.iso.date(),
   criteria: z.string(),
 });
 
@@ -60,8 +60,8 @@ const HospitalEntrySchema = BaseEntrySchema.extend({
 });
 
 const SickLeaveSchema = z.object({
-  startDate: z.string(),
-  endDate: z.string(),
+  startDate: z.iso.date(),
+  endDate: z.iso.date(),
 });
 
 const OccupationalHealthcareEntrySchema = BaseEntrySchema.extend({

@@ -6,6 +6,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import Entry from "./Entry";
+import EntryForm from "./EntryForm";
 
 const PatientDetails = () => {
   const [curPatient, setCurPatient] = useState<Patient>();
@@ -31,6 +32,10 @@ const PatientDetails = () => {
     }
   };
 
+  if (!id) {
+    return <div>Something went wrong...</div>;
+  }
+
   return (
     <div>
       <h2>
@@ -39,6 +44,7 @@ const PatientDetails = () => {
       <p>ssn: {curPatient.ssn}</p>
       <p>occupation: {curPatient.occupation}</p>
       <p>date of birth: {curPatient.dateOfBirth}</p>
+      <EntryForm id={id} setCurPatient={setCurPatient} curPatient={curPatient} />
       {curPatient.entries.length !== 0 && <h3>Entries</h3>}
       <div>
         {curPatient.entries.map((e) => (

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import patientService from "../../services/patients";
+import diagnoseService from "../../services/diagnoses";
 import type { Entry, Diagnosis } from "../../types";
 import { HealthCheckRating } from "../../types";
 import { Box } from "@mui/material";
@@ -7,11 +7,11 @@ import { Box } from "@mui/material";
 const Entry = ({ entry }: { entry: Entry }) => {
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
   const healthCheckLabel = Object.fromEntries(
-    Object.entries(HealthCheckRating).map(([key, value]) => [value, key])
+    Object.entries(HealthCheckRating).map(([key, value]) => [value, key]),
   );
 
   useEffect(() => {
-    patientService.getDiagnoses().then((res) => setDiagnoses(res));
+    diagnoseService.getDiagnoses().then((res) => setDiagnoses(res));
   }, []);
 
   if (!diagnoses) {
@@ -32,7 +32,9 @@ const Entry = ({ entry }: { entry: Entry }) => {
   const renderDetails = () => {
     switch (entry.type) {
       case "HealthCheck":
-        return <p>Health Rating: {healthCheckLabel[entry.healthCheckRating]}</p>;
+        return (
+          <p>Health Rating: {healthCheckLabel[entry.healthCheckRating]}</p>
+        );
       case "Hospital":
         return <p>{entry.discharge.date}</p>;
       case "OccupationalHealthcare":
@@ -41,7 +43,7 @@ const Entry = ({ entry }: { entry: Entry }) => {
             <p>Employer: {entry.employerName}</p>
             {entry.sickLeave && (
               <div>
-                Sick Leave: 
+                Sick Leave:
                 <p>Start: {entry.sickLeave.startDate}</p>
                 <p>End: {entry.sickLeave.endDate}</p>
               </div>
@@ -57,13 +59,15 @@ const Entry = ({ entry }: { entry: Entry }) => {
     <Box sx={{ border: 2, borderColor: "black", p: 2, m: 2, borderRadius: 2 }}>
       <p>{entry.date}</p>
       <i>{entry.description}</i>
-      <ul>
-        {entry.diagnosisCodes?.map((c) => (
-          <li key={c}>
-            {c}: {getDiagnosisDesc(c)}
-          </li>
-        ))}
-      </ul>
+      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
+        <ul>
+          {entry.diagnosisCodes?.map((c) => (
+            <li key={c}>
+              {c}: {getDiagnosisDesc(c)}
+            </li>
+          ))}
+        </ul>
+      )}
       <p>Diagnose by: {entry.specialist}</p>
       {renderDetails()}
     </Box>
